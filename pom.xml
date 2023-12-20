@@ -8,8 +8,8 @@
 		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.fw</groupId>
-	<artifactId>paris</artifactId>
+	<groupId>com.enterprise</groupId>
+	<artifactId>new-project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>paris</name>
 	<description>Demo project for Spring Boot</description>
