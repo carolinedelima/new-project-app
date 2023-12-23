@@ -22,4 +22,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User [Id] " + id + " not found."));
     }
+
+    public void createUser(User user) {
+        userRepository.save(user);
+    }
 }
