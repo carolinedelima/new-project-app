@@ -19,11 +19,23 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [Id] " + id + " not found."));
+        return userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
     }
 
     public void createUser(User user) {
         userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        checkIfExistUserId(id);
+        userRepository.deleteById(id);
+    }
+
+    private void checkIfExistUserId(Long id) {
+        userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
+    }
+
+    private ResponseStatusException userIdNotFound(String id) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "User [Id] " + id + " not found.");
     }
 }
