@@ -16,7 +16,6 @@ public class UserService {
     UserRepository userRepository;
 
     public List<User> getUsers() {
-        //if (!name.isEmpty()) return userRepository.findByName(name);
         return (List<User>) userRepository.findAll();
     }
 
@@ -25,10 +24,9 @@ public class UserService {
         if (id != null) return checkIfExistUserId(Long.valueOf(id));
 
         final String email = params.get("email");
-        if (email != null) return userRepository.findByEmail(email).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [email] " + email + " not found."));
+        if (email != null) return checkIfExistUserEmail(email);
 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] or [name] params.");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] or [email] params.");
     }
 
     public void createUser(User user) {
@@ -58,6 +56,12 @@ public class UserService {
 
     private User checkIfExistUserId(Long id) {
         return userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
+    }
+
+    private User checkIfExistUserEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [email] " + email + " not found."));
+
     }
 
     private void checkIfEmailAlreadyExist(String email) {
