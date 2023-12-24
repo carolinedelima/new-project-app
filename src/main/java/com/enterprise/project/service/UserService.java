@@ -23,6 +23,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
+        checkIfEmailAlreadyExist(user.getEmail());
         userRepository.save(user);
     }
 
@@ -31,8 +32,28 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    private void checkIfExistUserId(Long id) {
-        userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
+    public void updateUser(Long id, User newUser) {
+        final User oldUser = checkIfExistUserId(id);
+        newUser.setId(id);
+
+        if (newUser.getEmail() != null) {
+            checkIfEmailAlreadyExist(newUser.getEmail());
+        } else {
+            newUser.setEmail(oldUser.getEmail());
+        }
+        if (newUser.getName() == null) newUser.setName(oldUser.getName());
+        if (newUser.getPassword() == null) newUser.setPassword(oldUser.getPassword());
+
+        userRepository.save(newUser);
+    }
+
+    private User checkIfExistUserId(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
+    }
+
+    private void checkIfEmailAlreadyExist(String email) {
+        userRepository.findByEmail(email).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [email] " + email + " not found."));
     }
 
     private ResponseStatusException userIdNotFound(String id) {
