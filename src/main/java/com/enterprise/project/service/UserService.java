@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -15,11 +16,19 @@ public class UserService {
     UserRepository userRepository;
 
     public List<User> getUsers() {
+        //if (!name.isEmpty()) return userRepository.findByName(name);
         return (List<User>) userRepository.findAll();
     }
 
-    public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> userIdNotFound(id.toString()));
+    public User getUser(Map<String, String> params) {
+        final String id = params.get("id");
+        if (id != null) return checkIfExistUserId(Long.valueOf(id));
+
+        final String email = params.get("email");
+        if (email != null) return userRepository.findByEmail(email).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [email] " + email + " not found."));
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] or [name] params.");
     }
 
     public void createUser(User user) {
@@ -52,8 +61,9 @@ public class UserService {
     }
 
     private void checkIfEmailAlreadyExist(String email) {
-        userRepository.findByEmail(email).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [email] " + email + " not found."));
+        userRepository.findByEmail(email).ifPresent(user -> {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User [email] " + email + " already exists.");
+        });
     }
 
     private ResponseStatusException userIdNotFound(String id) {

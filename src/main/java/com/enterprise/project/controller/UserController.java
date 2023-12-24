@@ -8,36 +8,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUser(id));
+    @GetMapping("/user")
+    public ResponseEntity<User> getUser(@RequestParam Map<String, String> params) {
+        return ResponseEntity.ok(userService.getUser(params));
     }
 
-    @PostMapping
+    @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("user/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody User user) {
         userService.updateUser(id, user);
         return ResponseEntity.noContent().build();
