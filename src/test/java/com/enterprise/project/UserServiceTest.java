@@ -54,4 +54,12 @@ public class UserServiceTest {
         Assertions.assertNotNull(userById);
         Assertions.assertEquals(userById, user);
     }
+
+    @Test
+    public void getUserByEmail() {
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.ofNullable(user));
+        User userByEmail = userService.getUser(Map.of("email", USER_EMAIL));
+        Assertions.assertNotNull(userByEmail);
+        Assertions.assertEquals(userByEmail, user);
+    }
 }
