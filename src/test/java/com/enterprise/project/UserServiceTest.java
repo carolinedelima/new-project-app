@@ -68,4 +68,11 @@ public class UserServiceTest {
         userService.createUser(user);
         verify(userRepository, times(1)).save(user);
     }
+
+    @Test
+    public void deleteUser() {
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.ofNullable(user));
+        userService.deleteUser(USER_ID);
+        verify(userRepository, times(1)).deleteById(USER_ID);
+    }
 }
