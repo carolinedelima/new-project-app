@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -61,5 +61,11 @@ public class UserServiceTest {
         User userByEmail = userService.getUser(Map.of("email", USER_EMAIL));
         Assertions.assertNotNull(userByEmail);
         Assertions.assertEquals(userByEmail, user);
+    }
+
+    @Test
+    public void createUser() {
+        userService.createUser(user);
+        verify(userRepository, times(1)).save(user);
     }
 }
