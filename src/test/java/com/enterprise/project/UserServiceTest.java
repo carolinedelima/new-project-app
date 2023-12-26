@@ -75,4 +75,13 @@ public class UserServiceTest {
         userService.deleteUser(USER_ID);
         verify(userRepository, times(1)).deleteById(USER_ID);
     }
+
+    @Test
+    public void updateUser() {
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.ofNullable(user));
+        User userUpdate = user;
+        userUpdate.setName("Beatriz");
+        userService.updateUser(USER_ID, userUpdate);
+        verify(userRepository, times(1)).save(userUpdate);
+    }
 }
