@@ -30,6 +30,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
+        checkIfIdAlreadyExists(user.getId());
         checkIfEmailAlreadyExist(user.getEmail());
         userRepository.save(user);
     }
@@ -67,6 +68,12 @@ public class UserService {
     private void checkIfEmailAlreadyExist(String email) {
         userRepository.findByEmail(email).ifPresent(user -> {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User [email] " + email + " already exists.");
+        });
+    }
+
+    private void checkIfIdAlreadyExists(Long id) {
+        userRepository.findById(id).ifPresent(user -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User [id] " + id + " already exists.");
         });
     }
 

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -83,5 +84,11 @@ public class UserServiceTest {
         userUpdate.setName("Beatriz");
         userService.updateUser(USER_ID, userUpdate);
         verify(userRepository, times(1)).save(userUpdate);
+    }
+
+    @Test(expected = ResponseStatusException.class)
+    public void createUserSameId() {
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.ofNullable(user));
+        userService.createUser(user);
     }
 }
