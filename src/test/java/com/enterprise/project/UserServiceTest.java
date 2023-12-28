@@ -91,4 +91,10 @@ public class UserServiceTest {
         when(userRepository.findById(USER_ID)).thenReturn(Optional.ofNullable(user));
         userService.createUser(user);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void createUserSameEmail() {
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.ofNullable(user));
+        userService.createUser(user);
+    }
 }
