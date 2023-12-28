@@ -97,4 +97,9 @@ public class UserServiceTest {
         when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.ofNullable(user));
         userService.createUser(user);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserByIdNotFound() {
+        userService.getUser(Map.of("id", "0"));
+    }
 }
