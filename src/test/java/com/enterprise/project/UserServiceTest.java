@@ -102,4 +102,9 @@ public class UserServiceTest {
     public void getUserByIdNotFound() {
         userService.getUser(Map.of("id", "0"));
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserByEmailNotFound() {
+        userService.getUser(Map.of("email", "new@email.com"));
+    }
 }
