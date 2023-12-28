@@ -107,4 +107,9 @@ public class UserServiceTest {
     public void getUserByEmailNotFound() {
         userService.getUser(Map.of("email", "new@email.com"));
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserByWrongParam() {
+        userService.getUser(Map.of("name", USER_NAME));
+    }
 }
