@@ -117,4 +117,9 @@ public class UserServiceTest {
     public void deleteUserByIdNotFound() {
         userService.deleteUser(USER_ID);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void updateUserByIdNotFound() {
+        userService.updateUser(USER_ID, user);
+    }
 }
