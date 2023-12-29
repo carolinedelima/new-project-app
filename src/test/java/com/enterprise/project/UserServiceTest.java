@@ -112,4 +112,9 @@ public class UserServiceTest {
     public void getUserByWrongParam() {
         userService.getUser(Map.of("name", USER_NAME));
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void deleteUserByIdNotFound() {
+        userService.deleteUser(USER_ID);
+    }
 }
