@@ -122,4 +122,11 @@ public class UserServiceTest {
     public void updateUserByIdNotFound() {
         userService.updateUser(USER_ID, user);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void updateUserEmailAlreadyExists() {
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.ofNullable(user));
+        userService.updateUser(USER_ID, user);
+    }
 }
