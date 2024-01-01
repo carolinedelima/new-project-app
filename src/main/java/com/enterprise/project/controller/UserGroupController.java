@@ -32,4 +32,10 @@ public class UserGroupController {
         userGroupService.createUserGroup(userGroup);
         return ResponseEntity.status(HttpStatus.CREATED).body(userGroup);
     }
+
+    @DeleteMapping("/userGroup")
+    public ResponseEntity<Void> deleteUserGroup(@RequestParam Long id) {
+        userGroupService.deleteUserGroup(id);
+        return ResponseEntity.noContent().build();
+    }
 }

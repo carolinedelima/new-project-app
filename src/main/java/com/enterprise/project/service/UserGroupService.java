@@ -38,4 +38,12 @@ public class UserGroupService {
     public void createUserGroup(UserGroup userGroup) {
         userGroupRepository.save(userGroup);
     }
+
+    public void deleteUserGroup(Long id) {
+        if (userGroupRepository.findById(id).isPresent()) {
+            userGroupRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User Group [id]" + id + " not found.");
+        }
+    }
 }
