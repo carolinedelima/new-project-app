@@ -38,4 +38,10 @@ public class UserGroupController {
         userGroupService.deleteUserGroup(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/userGroup")
+    public ResponseEntity<Void> updateUserGroup(@RequestParam Long id, @RequestBody UserGroup userGroup) {
+        userGroupService.updateUserGroup(id, userGroup);
+        return ResponseEntity.noContent().build();
+    }
 }
