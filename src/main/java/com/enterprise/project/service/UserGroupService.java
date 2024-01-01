@@ -34,4 +34,8 @@ public class UserGroupService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] param.");
         }
     }
+
+    public void createUserGroup(UserGroup userGroup) {
+        userGroupRepository.save(userGroup);
+    }
 }

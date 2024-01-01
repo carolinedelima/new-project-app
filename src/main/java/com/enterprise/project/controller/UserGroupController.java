@@ -3,11 +3,9 @@ package com.enterprise.project.controller;
 import com.enterprise.project.model.UserGroup;
 import com.enterprise.project.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +25,11 @@ public class UserGroupController {
     @GetMapping("/userGroup")
     public ResponseEntity<UserGroup> getUserGroup(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(userGroupService.getUserGroup(params));
+    }
+
+    @PostMapping("/userGroup")
+    public ResponseEntity<UserGroup> createUserGroup(@RequestBody UserGroup userGroup) {
+        userGroupService.createUserGroup(userGroup);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userGroup);
     }
 }
