@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.Mockito.when;
@@ -45,5 +47,13 @@ public class UserGroupServiceTest {
         List<UserGroup> userGroups = userGroupService.getUserGroups();
         Assertions.assertEquals(userGroups.size(), 1);
         Assertions.assertEquals(userGroups.get(0), this.userGroup);
+    }
+
+    @Test
+    public void getUserGroupById() {
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        UserGroup userGroup = userGroupService.getUserGroup(Map.of("id", USER_GROUP_ID.toString()));
+        Assertions.assertNotNull(userGroup);
+        Assertions.assertEquals(userGroup, this.userGroup);
     }
 }
