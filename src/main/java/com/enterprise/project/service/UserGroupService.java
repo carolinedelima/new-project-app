@@ -46,8 +46,8 @@ public class UserGroupService {
         if (newUserGroup.getGroupName() == null) {
             newUserGroup.setGroupName(oldUserGroup.getGroupName());
         }
-        if (newUserGroup.getAdminUser() == null) {
-            newUserGroup.setAdminUser(oldUserGroup.getAdminUser());
+        if (newUserGroup.getAdminUserId() == null) {
+            newUserGroup.setAdminUserId(oldUserGroup.getAdminUserId());
         }
         if (newUserGroup.getUserIds() != null) {
             Set<Long> newUserIds = oldUserGroup.getUserIds();

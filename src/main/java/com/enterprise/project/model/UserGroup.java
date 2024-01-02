@@ -20,6 +20,6 @@ public class UserGroup {
     private long id;
 
     private String groupName;
-    private String adminUser;
+    private Long adminUserId;
     private Set<Long> userIds;
 }
