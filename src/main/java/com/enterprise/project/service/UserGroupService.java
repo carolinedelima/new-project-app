@@ -67,6 +67,7 @@ public class UserGroupService {
         }
 
         if (newUserGroup.getUserIds() != null) {
+            newUserGroup.getUserIds().forEach(this::validateUserById);
             Set<Long> newUserIds = oldUserGroup.getUserIds();
             newUserIds.addAll(newUserGroup.getUserIds());
             newUserGroup.setUserIds(newUserIds);
