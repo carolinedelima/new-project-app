@@ -25,8 +25,15 @@ public class UserGroupService {
         final String id = params.get("id");
         if (id != null) {
             return findById(Long.valueOf(id));
+        }
+
+        final String groupName = params.get("groupName");
+        if (groupName != null) {
+            return userGroupRepository.findByGroupName(groupName)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "User Group [groupName] " + groupName + " not found."));
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] param.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] and [groupName] params.");
         }
     }
 
