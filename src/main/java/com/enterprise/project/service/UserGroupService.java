@@ -2,6 +2,7 @@ package com.enterprise.project.service;
 
 import com.enterprise.project.model.UserGroup;
 import com.enterprise.project.repository.UserGroupRepository;
+import com.enterprise.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class UserGroupService {
     @Autowired
     UserGroupRepository userGroupRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     public List<UserGroup> getUserGroups() {
         return (List<UserGroup>) userGroupRepository.findAll();
     }
@@ -29,15 +33,14 @@ public class UserGroupService {
 
         final String groupName = params.get("groupName");
         if (groupName != null) {
-            return userGroupRepository.findByGroupName(groupName)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "User Group [groupName] " + groupName + " not found."));
+            return findByGroupName(groupName);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only allowed [id] and [groupName] params.");
         }
     }
 
     public void createUserGroup(UserGroup userGroup) {
+        validateUserById(userGroup.getAdminUserId());
         userGroupRepository.save(userGroup);
     }
 
@@ -53,9 +56,13 @@ public class UserGroupService {
         if (newUserGroup.getGroupName() == null) {
             newUserGroup.setGroupName(oldUserGroup.getGroupName());
         }
-        if (newUserGroup.getAdminUserId() == null) {
+
+        if (newUserGroup.getAdminUserId() != null) {
+            validateUserById(newUserGroup.getAdminUserId());
+        } else {
             newUserGroup.setAdminUserId(oldUserGroup.getAdminUserId());
         }
+
         if (newUserGroup.getUserIds() != null) {
             Set<Long> newUserIds = oldUserGroup.getUserIds();
             newUserIds.addAll(newUserGroup.getUserIds());
@@ -69,5 +76,16 @@ public class UserGroupService {
     private UserGroup findById(Long id) {
         return userGroupRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User Group [id]" + id + " not found."));
+    }
+
+    private UserGroup findByGroupName(String groupName) {
+        return userGroupRepository.findByGroupName(groupName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "User Group [groupName] " + groupName + " not found."));
+    }
+
+    private void validateUserById(Long id) {
+        userRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User [id] " + id + " not found."));
     }
 }
