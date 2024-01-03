@@ -41,6 +41,7 @@ public class UserGroupService {
 
     public void createUserGroup(UserGroup userGroup) {
         validateUserById(userGroup.getAdminUserId());
+        validateGroupName(userGroup.getGroupName());
         userGroupRepository.save(userGroup);
     }
 
@@ -53,7 +54,9 @@ public class UserGroupService {
         final UserGroup oldUserGroup = findById(id);
         newUserGroup.setId(id);
 
-        if (newUserGroup.getGroupName() == null) {
+        if (newUserGroup.getGroupName() != null) {
+            validateGroupName(newUserGroup.getGroupName());
+        } else {
             newUserGroup.setGroupName(oldUserGroup.getGroupName());
         }
 
@@ -87,5 +90,11 @@ public class UserGroupService {
     private void validateUserById(Long id) {
         userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User [id] " + id + " not found."));
+    }
+
+    private void validateGroupName(String groupName) {
+        userGroupRepository.findByGroupName(groupName).ifPresent(userGroup -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group Name " + groupName + " already taken.");
+        });
     }
 }
