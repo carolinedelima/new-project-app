@@ -21,10 +21,10 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
     User user = new User();
-    private static final Long USER_ID = 1L;
-    private static final String USER_NAME = "Caroline";
-    private static final String USER_EMAIL = "caroline@lima.com";
-    private static final String USER_PASSWORD = "12345";
+    static final Long USER_ID = 1L;
+    static final String USER_NAME = "Caroline";
+    static final String USER_EMAIL = "caroline@lima.com";
+    static final String USER_PASSWORD = "12345";
 
     @Mock
     private UserRepository userRepository;
