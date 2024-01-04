@@ -98,4 +98,19 @@ public class UserGroupServiceTest {
         userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
         verify(userGroupRepository, times(1)).save(saveUserGroup);
     }
+
+    @Test
+    public void updateUserGroupAdminUser() {
+        final Long newAdminId = 2L;
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        when(userRepository.findById(newAdminId)).thenReturn(Optional.ofNullable(user));
+
+        UserGroup updateUserGroup = new UserGroup();
+        updateUserGroup.setAdminUserId(newAdminId);
+        UserGroup saveUserGroup = userGroup;
+        saveUserGroup.setAdminUserId(newAdminId);
+
+        userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
+        verify(userGroupRepository, times(1)).save(saveUserGroup);
+    }
 }
