@@ -76,4 +76,11 @@ public class UserGroupServiceTest {
         userGroupService.createUserGroup(userGroup);
         verify(userGroupRepository, times(1)).save(userGroup);
     }
+
+    @Test
+    public void deleteUserGroup() {
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        userGroupService.deleteUserGroup(USER_GROUP_ID);
+        verify(userGroupRepository, times(1)).deleteById(USER_GROUP_ID);
+    }
 }
