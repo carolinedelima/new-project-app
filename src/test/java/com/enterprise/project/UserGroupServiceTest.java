@@ -83,4 +83,19 @@ public class UserGroupServiceTest {
         userGroupService.deleteUserGroup(USER_GROUP_ID);
         verify(userGroupRepository, times(1)).deleteById(USER_GROUP_ID);
     }
+
+    @Test
+    public void updateUserGroupName() {
+        final String newUserGroupName = "New User Group Name";
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        when(userGroupRepository.findByGroupName(newUserGroupName)).thenReturn(Optional.empty());
+
+        UserGroup updateUserGroup = new UserGroup();
+        updateUserGroup.setGroupName(newUserGroupName);
+        UserGroup saveUserGroup = userGroup;
+        saveUserGroup.setGroupName(newUserGroupName);
+
+        userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
+        verify(userGroupRepository, times(1)).save(saveUserGroup);
+    }
 }
