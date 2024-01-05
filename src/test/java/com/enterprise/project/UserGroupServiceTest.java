@@ -13,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.enterprise.project.UserServiceTest.*;
 import static org.mockito.Mockito.*;
@@ -109,6 +106,24 @@ public class UserGroupServiceTest {
         updateUserGroup.setAdminUserId(newAdminId);
         UserGroup saveUserGroup = userGroup;
         saveUserGroup.setAdminUserId(newAdminId);
+
+        userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
+        verify(userGroupRepository, times(1)).save(saveUserGroup);
+    }
+
+    @Test
+    public void updateUserGroupUserIds() {
+        final Long newUserId = 3L;
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        when(userRepository.findById(newUserId)).thenReturn(Optional.ofNullable(user));
+
+        UserGroup updateUserGroup = new UserGroup();
+        updateUserGroup.setUserIds(Collections.singleton(newUserId));
+
+        UserGroup saveUserGroup = userGroup;
+        Set<Long> newUserIds = new HashSet<>(USER_GROUP_USER_IDS);
+        newUserIds.add(newUserId);
+        saveUserGroup.setUserIds(newUserIds);
 
         userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
         verify(userGroupRepository, times(1)).save(saveUserGroup);
