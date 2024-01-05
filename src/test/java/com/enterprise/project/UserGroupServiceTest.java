@@ -144,4 +144,11 @@ public class UserGroupServiceTest {
         UserGroup userGroup = userGroupService.getUserGroup(Map.of("id", USER_GROUP_ID.toString()));
         Assertions.assertNull(userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserGroupByNameNotFound() {
+        when(userGroupRepository.findByGroupName(USER_GROUP_NAME)).thenReturn(Optional.empty());
+        UserGroup userGroup = userGroupService.getUserGroup(Map.of("groupName", USER_GROUP_NAME));
+        Assertions.assertNull(userGroup);
+    }
 }
