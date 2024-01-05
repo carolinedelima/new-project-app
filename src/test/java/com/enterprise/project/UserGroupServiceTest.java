@@ -137,4 +137,11 @@ public class UserGroupServiceTest {
         userGroupService.updateUserGroup(USER_GROUP_ID, updateUserGroup);
         verify(userGroupRepository, times(1)).save(saveUserGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserGroupByIdNotFound() {
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.empty());
+        UserGroup userGroup = userGroupService.getUserGroup(Map.of("id", USER_GROUP_ID.toString()));
+        Assertions.assertNull(userGroup);
+    }
 }
