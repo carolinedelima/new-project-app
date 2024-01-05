@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -62,6 +63,14 @@ public class UserGroupServiceTest {
     public void getUserGroupById() {
         when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
         UserGroup userGroup = userGroupService.getUserGroup(Map.of("id", USER_GROUP_ID.toString()));
+        Assertions.assertNotNull(userGroup);
+        Assertions.assertEquals(userGroup, this.userGroup);
+    }
+
+    @Test
+    public void getUserGroupByName() {
+        when(userGroupRepository.findByGroupName(USER_GROUP_NAME)).thenReturn(Optional.ofNullable(userGroup));
+        UserGroup userGroup = userGroupService.getUserGroup(Map.of("groupName", USER_GROUP_NAME));
         Assertions.assertNotNull(userGroup);
         Assertions.assertEquals(userGroup, this.userGroup);
     }
