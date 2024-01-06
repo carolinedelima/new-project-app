@@ -42,6 +42,7 @@ public class UserGroupService {
     public void createUserGroup(UserGroup userGroup) {
         validateUserById(userGroup.getAdminUserId());
         validateGroupName(userGroup.getGroupName());
+        userGroup.getUserIds().forEach(this::validateUserById);
         userGroupRepository.save(userGroup);
     }
 
