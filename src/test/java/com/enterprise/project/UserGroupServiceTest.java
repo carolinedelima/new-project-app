@@ -157,4 +157,9 @@ public class UserGroupServiceTest {
         UserGroup userGroup = userGroupService.getUserGroup(Map.of("notExist", "param"));
         Assertions.assertNull(userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void createUserGroupWithAdminUserNotFound() {
+        userGroupService.createUserGroup(userGroup);
+    }
 }
