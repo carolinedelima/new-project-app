@@ -151,4 +151,10 @@ public class UserGroupServiceTest {
         UserGroup userGroup = userGroupService.getUserGroup(Map.of("groupName", USER_GROUP_NAME));
         Assertions.assertNull(userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getUserGroupByParamNotFound() {
+        UserGroup userGroup = userGroupService.getUserGroup(Map.of("notExist", "param"));
+        Assertions.assertNull(userGroup);
+    }
 }
