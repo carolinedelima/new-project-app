@@ -79,6 +79,8 @@ public class UserGroupServiceTest {
     public void createUserGroup() {
         when(userRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(user));
         when(userGroupRepository.findByGroupName(USER_GROUP_NAME)).thenReturn(Optional.empty());
+        when(userRepository.findById(USER_GROUP_USER_IDS.stream().findFirst().get()))
+                .thenReturn(Optional.ofNullable(user));
         userGroupService.createUserGroup(userGroup);
         verify(userGroupRepository, times(1)).save(userGroup);
     }
@@ -160,6 +162,12 @@ public class UserGroupServiceTest {
 
     @Test(expected = ResponseStatusException.class)
     public void createUserGroupWithAdminUserNotFound() {
+        userGroupService.createUserGroup(userGroup);
+    }
+
+    @Test(expected = ResponseStatusException.class)
+    public void createUserGroupWithExistingName() {
+        when(userRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(user));
         userGroupService.createUserGroup(userGroup);
     }
 }
