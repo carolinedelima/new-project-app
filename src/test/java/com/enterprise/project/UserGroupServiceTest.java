@@ -187,4 +187,10 @@ public class UserGroupServiceTest {
     public void updateUserGroupWithUserGroupIdNotFound() {
         userGroupService.updateUserGroup(USER_GROUP_ID, userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void updateUserGroupWithExistingUserGroupName() {
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        userGroupService.updateUserGroup(USER_GROUP_ID, userGroup);
+    }
 }
