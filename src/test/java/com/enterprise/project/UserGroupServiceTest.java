@@ -177,4 +177,9 @@ public class UserGroupServiceTest {
         when(userGroupRepository.findByGroupName(USER_GROUP_NAME)).thenReturn(Optional.empty());
         userGroupService.createUserGroup(userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void deleteUserGroupWithUserGroupIdNotFound() {
+        userGroupService.deleteUserGroup(USER_GROUP_ID);
+    }
 }
