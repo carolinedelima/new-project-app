@@ -170,4 +170,11 @@ public class UserGroupServiceTest {
         when(userRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(user));
         userGroupService.createUserGroup(userGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void createUserGroupWithUserIdsNotFound() {
+        when(userRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(user));
+        when(userGroupRepository.findByGroupName(USER_GROUP_NAME)).thenReturn(Optional.empty());
+        userGroupService.createUserGroup(userGroup);
+    }
 }
