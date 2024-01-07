@@ -182,4 +182,9 @@ public class UserGroupServiceTest {
     public void deleteUserGroupWithUserGroupIdNotFound() {
         userGroupService.deleteUserGroup(USER_GROUP_ID);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void updateUserGroupWithUserGroupIdNotFound() {
+        userGroupService.updateUserGroup(USER_GROUP_ID, userGroup);
+    }
 }
