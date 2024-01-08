@@ -190,7 +190,13 @@ public class UserGroupServiceTest {
 
     @Test(expected = ResponseStatusException.class)
     public void updateUserGroupWithExistingUserGroupName() {
+        final String newUserGroupName = "New Group Name";
         when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
-        userGroupService.updateUserGroup(USER_GROUP_ID, userGroup);
+        when(userGroupRepository.findByGroupName(newUserGroupName)).thenReturn(Optional.ofNullable(userGroup));
+
+        UserGroup newUserGroup = new UserGroup();
+        newUserGroup.setGroupName(newUserGroupName);
+
+        userGroupService.updateUserGroup(USER_GROUP_ID, newUserGroup);
     }
 }
