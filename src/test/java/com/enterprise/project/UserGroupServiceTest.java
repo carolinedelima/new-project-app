@@ -207,4 +207,12 @@ public class UserGroupServiceTest {
         newUserGroup.setAdminUserId(3L);
         userGroupService.updateUserGroup(USER_GROUP_ID, newUserGroup);
     }
+
+    @Test(expected = ResponseStatusException.class)
+    public void updateUserGroupWithNotFoundUserIds() {
+        when(userGroupRepository.findById(USER_GROUP_ID)).thenReturn(Optional.ofNullable(userGroup));
+        UserGroup newUserGroup = new UserGroup();
+        newUserGroup.setUserIds(Set.of(4L));
+        userGroupService.updateUserGroup(USER_GROUP_ID, newUserGroup);
+    }
 }
